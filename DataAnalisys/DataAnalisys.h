@@ -1,6 +1,7 @@
 #pragma once
 #include "LidarDLL.h"
 #include <math.h>
+#include <vector>
 //TODO: ARREGLAR TAMAÑO DE MATRIZ
 #define tamMatrixFil 50
 #define tamMatrixCol 50
@@ -13,13 +14,11 @@ ref class DataAnalisys {
 public:
 	//Constructor
 	DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol]);
-	//Eliminate los puntos no validos 
-	void QuitarPuntos(Punto3D* matrix[tamMatrixFil][tamMatrixCol]);
 	//Se encarga de agrupar puntos en obstaculos
 	void Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol]);
 private:
-	int menor;
-
-	array<int>^ listMenor;
+	int menor = 4;
+	vector<Obstaculo> &Obstaculos;
+	cli::array<int>^ listMenor;
 	bool puntosCercanos(Punto3D *p1, Punto3D *p2);
 };

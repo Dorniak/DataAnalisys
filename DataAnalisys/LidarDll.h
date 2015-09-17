@@ -1,29 +1,40 @@
+// PointDll.h
+
 #pragma once
 #include <vector>
-#ifdef LidarDLL_EXPORTS
-#define LidarDLL_API __declspec(dllexport) 
-#else
-#define LidarDLL_API __declspec(dllimport) 
-#endif
+
 using namespace System;
+using namespace std;
 
 namespace LidarDLL {
 
 	public class Punto3D
 	{
+
+#define MIN_DISTANCE 1		// Minimum valid distance
+#define MAX_DISTANCE 80		// Maximum valid distance
+
 	public:
 		Punto3D(double d, double i, double r);
+		Punto3D::Punto3D();
+		void setExiste(bool existe);
+		void setObs(int Obs);
 		void setCoordinatesX(double cx);
 		void setCoordinatesY(double cy);
 		void setCoordinatesZ(double cz);
-		static LidarDLL_API void setDistance(double d);
+		void setDistance(double d);
 		void setIntensity(double i);
 		void setAzimuth(double r);
 		void setDistance(Byte i, Byte j);
 		void setIntensity(Byte i);
 		void setAzimuth(Byte i, Byte j);
+		
 		void visualize();
 
+		//Cambiar
+		
+		bool getExiste();
+		int getObs();
 		double getCoordinatesX();
 		double getCoordinatesY();
 		double getCoordinatesZ();
@@ -33,6 +44,8 @@ namespace LidarDLL {
 		double distanceToPoint(Punto3D p);
 
 	private:
+		bool existe;
+		int Obs;			//Obstaculo al que pertenece el punto
 		double Intensity;	// Bounced beam intensity
 		double Distance;	// Distance to the point
 		double Azimuth;		// Horizontal angle Y-X
@@ -48,7 +61,7 @@ namespace LidarDLL {
 		double get;
 		void calcCentro();
 		void calcCentropred();
-		std::vector <Punto3D> componentes;
+		vector <Punto3D> componentes;
 	private:
 		Punto3D* North;
 		Punto3D* South;
