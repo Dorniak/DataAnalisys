@@ -18,7 +18,7 @@ public:
 	void Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol]);
 private:
 	int menor = 4;
-	vector<Obstaculo> &Obstaculos;
+	static vector<Obstaculo> &Obstaculos;
 	cli::array<int>^ listMenor;
 	bool puntosCercanos(Punto3D *p1, Punto3D *p2);
 };
