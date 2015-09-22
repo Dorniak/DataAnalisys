@@ -93,7 +93,21 @@ void DataAnalisys::prepararObstaculos() {
 
 }
 void DataAnalisys::RelacionarObstaculos() {
+	//fabs(matrix[i][0].getCentro()->distanciaPunto(matrix[j][1].getCentropred())) < (VCOCHE / 3.6)*0.3
+	for (int i = 0; i < Obstaculos.size; i++) {
+		for (int j = 0; j < ObstaculosvAnt.size; j++) {
+			if (ObstaculosvAnt[j].getVelocidad() >= 1)
+			{
+				if (Obstaculos[i].getCentro().distanceToPoint(ObstaculosvAnt[j].getCentroPred) < (VCOCHE / 3.6)*0.3) {
+					relacionarVel(i, j, VCOCHE, resolucionAngular);
+				}
+				else if (Obstaculos[i].getCentro().distanceToPoint(ObstaculosvAnt[j].getCentro< minimo)) {
+					relacionarPos(i, j, VCOCHE, resolucionAngular);
+				}
 
+			}
+		}
+	}
 }
 bool DataAnalisys::puntosCercanos(Punto3D *p1, Punto3D *p2)
 {
