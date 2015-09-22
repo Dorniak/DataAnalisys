@@ -109,6 +109,12 @@ void DataAnalisys::RelacionarObstaculos() {
 		}
 	}
 }
+void DataAnalisys::relacionarVel(int i,int j,int VelC,int Res) {
+
+}
+void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res) {
+
+}
 bool DataAnalisys::puntosCercanos(Punto3D *p1, Punto3D *p2)
 {
 	float s0 = 1.4;
