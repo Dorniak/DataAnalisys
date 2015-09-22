@@ -4,6 +4,10 @@ DataAnalisys::DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol])
 	Segmentacion(matriz);
 	/*for (int k = 0; k < listMenor->Length; k++)
 		listMenor[k] = 0;*/
+	prepararObstaculos();
+	RelacionarObstaculos();
+	ObstaculosvAnt = Obstaculos;
+	Obstaculos.clear;
 }
 
 void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
@@ -81,6 +85,15 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 			}
 		}
 	}
+}
+void DataAnalisys::prepararObstaculos() {
+	for (int i = 0; i < Obstaculos.size; i++) {
+		Obstaculos[i].prepararObs();
+	}
+
+}
+void DataAnalisys::RelacionarObstaculos() {
+
 }
 bool DataAnalisys::puntosCercanos(Punto3D *p1, Punto3D *p2)
 {
