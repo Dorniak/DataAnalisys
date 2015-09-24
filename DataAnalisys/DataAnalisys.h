@@ -21,7 +21,7 @@ private:
 	int menor = 4;
 	static vector<Obstaculo> &Obstaculos;
 	static vector<Obstaculo> &ObstaculosvAnt;
-	cli::array<int>^ listMenor;
+	cli::array<double>^ listMenor;
 	void Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol]);
 	void prepararObstaculos();
 	void EliminarObstaculos();

@@ -12,7 +12,7 @@ DataAnalisys::DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol])
 		RelacionarObstaculos();
 	}
 	ObstaculosvAnt = Obstaculos;
-	Obstaculos.clear;
+	Obstaculos.clear();
 	//TODO::Hacer el adelantamiento al final
 }
 
@@ -22,7 +22,7 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 	for (int i = 0; i <= tamMatrixFil; i++) {
 		for (int j = 0; j <= tamMatrixCol; i++) {
 			//Se comprubea si el punto a tratar Existe
-			if (matrix[i][j]->getExiste) {
+			if (matrix[i][j]->getExiste()) {
 				//En caso de que sea el primer punto se asigna directamente al obstaculo 1
 				if (i == 0 && j == 0) {
 					//Mete al final del vector de obstaculos un obstaculo que crea
@@ -36,19 +36,19 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 				else {
 					//Se compara cada punto a tratar con sus puntos adyacentes ya tratados
 					if (i > 0) {
-						if (matrix[i - 1][j]->getExiste)
+						if (matrix[i - 1][j]->getExiste())
 							listMenor[2] = matrix[i][j]->distanceToPoint(*matrix[i - 1][j]);
 						if (j > 0) {
-							if (matrix[i - 1][j - 1]->getExiste)
+							if (matrix[i - 1][j - 1]->getExiste())
 								listMenor[1] = matrix[i][j]->distanceToPoint(*matrix[i - 1][j - 1]);
 						}
 						if (i > 0 && j < tamMatrixCol) {
-							if (matrix[i - 1][j + 1]->getExiste)
+							if (matrix[i - 1][j + 1]->getExiste())
 								listMenor[3] = matrix[i][j]->distanceToPoint(*matrix[i - 1][j + 1]);
 						}
 					}
 					if (j > 0) {
-						if (matrix[i][j - 1]->getExiste)
+						if (matrix[i][j - 1]->getExiste())
 							listMenor[4] = matrix[i][j]->distanceToPoint(*matrix[i][j - 1]);
 					}
 					//Se coge el punto mas cercano al que estamos tratando y se incluye en su obstaculo
@@ -76,12 +76,12 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 						}//TODO:Falta crear la clase objeto
 						else {//TODO:en este caso crear un grupo para este punto
 							Obstaculos.push_back(Obstaculo());
-							matrix[i][j]->setObs(Obstaculos.size);
+							matrix[i][j]->setObs(Obstaculos.size());
 							Obstaculos[Obstaculos.size].componentes.push_back(*matrix[i][j]);
 						}
 					}
 					else { Obstaculos.push_back(Obstaculo());
-					matrix[i][j]->setObs(Obstaculos.size);
+					matrix[i][j]->setObs(Obstaculos.size());
 					Obstaculos[Obstaculos.size].componentes.push_back(*matrix[i][j]);
 					}//TODO:en este caso crear un grupo para este punto
 
@@ -94,7 +94,7 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 	}
 }
 void DataAnalisys::prepararObstaculos() {
-	for (int i = 0; i < Obstaculos.size; i++) {
+	for (int i = 0; i < Obstaculos.size(); i++) {
 		Obstaculos[i].prepararObs();//TODO::Calcular centro,cubo,y todo lo necesario
 	}
 
@@ -102,8 +102,8 @@ void DataAnalisys::prepararObstaculos() {
 void DataAnalisys::EliminarObstaculos()
 {
 	//TODO::Eliminar obastaculos pequeños o no validos
-	for (int p = 0; p < Obstaculos.size; p++) {
-		if (Obstaculos[p].componentes.size<20) {//TODO::Ajustar el numero minimo de puntos para considerarlo un obstaculo
+	for (int p = 0; p < Obstaculos.size(); p++) {
+		if (Obstaculos[p].componentes.size()<20) {//TODO::Ajustar el numero minimo de puntos para considerarlo un obstaculo
 			Obstaculos.erase(Obstaculos.begin()+p);
 			p--;
 		}
@@ -113,14 +113,14 @@ void DataAnalisys::EliminarObstaculos()
 void DataAnalisys::RelacionarObstaculos() {//TODO::Ajustar variables para este laser 
 	//TODO::Revisar la manera en la que se trata el plano
 	//fabs(matrix[i][0].getCentro()->distanciaPunto(matrix[j][1].getCentropred())) < (VCOCHE / 3.6)*0.3
-	for (int i = 0; i < Obstaculos.size; i++) {
-		for (int j = 0; j < ObstaculosvAnt.size; j++) {
+	for (int i = 0; i < Obstaculos.size(); i++) {
+		for (int j = 0; j < ObstaculosvAnt.size(); j++) {
 			if (ObstaculosvAnt[j].getVelocidad() >= 1)
 			{
 				if (Obstaculos[i].getCentro().distanceToPoint(ObstaculosvAnt[j].getCentroPred) < (VCOCHE / 3.6)*0.3) {
 					relacionarVel(i, j, VCOCHE, resolucionAngular);
 				}
-				else if (Obstaculos[i].getCentro().distanceToPoint(ObstaculosvAnt[j].getCentro< minimo)) {
+				else if (Obstaculos[i].getCentro().distanceToPoint(ObstaculosvAnt[j].getCentro)< minimo) {
 					relacionarPos(i, j, VCOCHE, resolucionAngular);
 				}
 
@@ -148,12 +148,12 @@ bool DataAnalisys::comprobarBloqueo()
 }
 bool DataAnalisys::puntosCercanos(Punto3D *p1, Punto3D *p2)
 {
-	float s0 = 1.4;
-	float s1 = sqrt(2 - (2 * cos(2 * resolucion*PI / 180)));
-	float r = p1->getDistance();
+	double s0 = 1.4;
+	double s1 = sqrt(2 - (2 * cos(2 * resolucion*PI / 180)));
+	double r = p1->getDistance();
 	if (p1->getDistance() > p2->getDistance())
 		r = p2->getDistance();
-	float tolererancia = s0 + (s1 * r);
+	double tolererancia = s0 + (s1 * r);
 
 	return (tolererancia > p1->distanceToPoint(*p2));
 }

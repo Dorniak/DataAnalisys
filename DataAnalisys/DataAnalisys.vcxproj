@@ -132,11 +132,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="DataAnalisys.cpp" />
-    <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="LidarDLL">
       <HintPath>..\..\LidarDLL\Release\LidarDLL.dll</HintPath>
+      <CopyLocalSatelliteAssemblies>true</CopyLocalSatelliteAssemblies>
     </Reference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
