@@ -24,8 +24,10 @@ private:
 	cli::array<int>^ listMenor;
 	void Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol]);
 	void prepararObstaculos();
+	void EliminarObstaculos();
 	void RelacionarObstaculos();
 	void relacionarVel(int i, int j, int VelC, int Res);
 	void relacionarPos(int i, int j, int VelC, int Res);
+	bool comprobarBloqueo();
 	bool puntosCercanos(Punto3D *p1, Punto3D *p2);
 };

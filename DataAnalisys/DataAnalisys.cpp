@@ -1,13 +1,19 @@
 #include "DataAnalisys.h"
 DataAnalisys::DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol])
 {
-	Segmentacion(matriz);
-	/*for (int k = 0; k < listMenor->Length; k++)
-		listMenor[k] = 0;*/
-	prepararObstaculos();
-	RelacionarObstaculos();
+	//TODO::Hacer esto en un bucle que se active al recibir una nueva matriz si se hace en un thread separado
+	//TODO::Si se hace como función no es necesario
+	if (!comprobarBloqueo()) {
+		Segmentacion(matriz);
+		/*for (int k = 0; k < listMenor->Length; k++)
+			listMenor[k] = 0;*/
+		EliminarObstaculos();
+		prepararObstaculos();
+		RelacionarObstaculos();
+	}
 	ObstaculosvAnt = Obstaculos;
 	Obstaculos.clear;
+	//TODO::Hacer el adelantamiento al final
 }
 
 void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
@@ -78,6 +84,7 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 					matrix[i][j]->setObs(Obstaculos.size);
 					Obstaculos[Obstaculos.size].componentes.push_back(*matrix[i][j]);
 					}//TODO:en este caso crear un grupo para este punto
+
 				}
 				for (int k = 0; k < listMenor->Length; k++)
 					listMenor[k] = 0;
@@ -88,11 +95,23 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 }
 void DataAnalisys::prepararObstaculos() {
 	for (int i = 0; i < Obstaculos.size; i++) {
-		Obstaculos[i].prepararObs();
+		Obstaculos[i].prepararObs();//TODO::Calcular centro,cubo,y todo lo necesario
 	}
 
 }
-void DataAnalisys::RelacionarObstaculos() {
+void DataAnalisys::EliminarObstaculos()
+{
+	//TODO::Eliminar obastaculos pequeños o no validos
+	for (int p = 0; p < Obstaculos.size; p++) {
+		if (Obstaculos[p].componentes.size<20) {//TODO::Ajustar el numero minimo de puntos para considerarlo un obstaculo
+			Obstaculos.erase(Obstaculos.begin()+p);
+			p--;
+		}
+	}
+	
+}
+void DataAnalisys::RelacionarObstaculos() {//TODO::Ajustar variables para este laser 
+	//TODO::Revisar la manera en la que se trata el plano
 	//fabs(matrix[i][0].getCentro()->distanciaPunto(matrix[j][1].getCentropred())) < (VCOCHE / 3.6)*0.3
 	for (int i = 0; i < Obstaculos.size; i++) {
 		for (int j = 0; j < ObstaculosvAnt.size; j++) {
@@ -109,11 +128,23 @@ void DataAnalisys::RelacionarObstaculos() {
 		}
 	}
 }
-void DataAnalisys::relacionarVel(int i,int j,int VelC,int Res) {
+void DataAnalisys::relacionarVel(int i,int j,int VelC,int Res) {//TODO::crear las funciones y añadir parametros
+	Obstaculos[i].setDireccion(ObstaculosvAnt[j].getCentro());
+	Obstaculos[i].calcCentropred();
+	Obstaculos[i].setVelocidad();
+	Obstaculos[i].calcTTC();
 
 }
-void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res) {
-
+void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res) {//TODO::crear las funciones y añadir parametros
+	Obstaculos[i].setDireccion(ObstaculosvAnt[j].getCentro());
+	Obstaculos[i].calcCentropred();
+	Obstaculos[i].setVelocidad();
+}
+bool DataAnalisys::comprobarBloqueo()
+{
+	//TODO::revisar si hay algo delante del coche y mandar señal de frenado
+	//Devuelve true cuando hay bloqueo
+	return false;
 }
 bool DataAnalisys::puntosCercanos(Punto3D *p1, Punto3D *p2)
 {
