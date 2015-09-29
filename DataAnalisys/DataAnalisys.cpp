@@ -122,7 +122,6 @@ void DataAnalisys::prepararObstaculos()
 }
 void DataAnalisys::EliminarObstaculos()
 {
-	//TODO::Eliminar obastaculos pequeños o no validos
 	for (int p = 0; p < Obstaculos.size(); p++)
 	{
 		if (Obstaculos[p].componentes.size() < 20)

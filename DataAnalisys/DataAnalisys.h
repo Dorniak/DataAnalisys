@@ -15,7 +15,7 @@ ref class DataAnalisys {
 public:
 	//Constructor
 	DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol],int resolucionAngular,int VCoche);
-	//Se encarga de agrupar puntos en obstaculos
+	//Se encarga de agrupar puntos en obstaculos/
 private:
 	int minimo;
 	int indice;
