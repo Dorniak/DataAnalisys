@@ -103,7 +103,7 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 						Obstaculos[Obstaculos.size()].componentes.push_back(*matrix[i][j]);
 					}
 				}
-				for (int k = 0; k < listMenor->Length; k++)
+				for (int k = 0; k < 4; k++)
 				{
 					listMenor[k] = 0;
 				}

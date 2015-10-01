@@ -2,6 +2,7 @@
 #include "Obstaculo.h"
 #include <math.h>
 #include <vector>
+#include <list>
 //TODO: ARREGLAR TAMAÑO DE MATRIZ
 #define tamMatrixFil 50
 #define tamMatrixCol 50
@@ -10,7 +11,7 @@ extern int resolution;
 extern int VCOCHE = 1;
 using namespace std;
 using namespace System;
-ref class DataAnalisys {
+class DataAnalisys {
 public:
 	//Constructor
 	DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol],int resolucionAngular,int VCoche);
@@ -20,9 +21,9 @@ private:
 	int minimo;
 	int indice;
 	int menor = 4;
-	static vector<Obstaculo> &Obstaculos;
-	static vector<Obstaculo> &ObstaculosvAnt{ };
-	cli::array<double>^ listMenor;
+	static vector<Obstaculo> Obstaculos;
+	static vector<Obstaculo> ObstaculosvAnt;
+	double listMenor[4];
 	void Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol]);
 	void prepararObstaculos();
 	void EliminarObstaculos();
