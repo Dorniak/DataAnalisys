@@ -92,14 +92,14 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 						else
 						{
 							Obstaculos.push_back(Obstaculo());
-							matrix[i][j]->setObstacle(Obstaculos.size());
+							matrix[i][j]->setObstacle((int)Obstaculos.size());
 							Obstaculos[Obstaculos.size()].componentes.push_back(*matrix[i][j]);
 						}
 					}//En este caso el punto no tiene puntos validos a su alrededor
 					else
 					{
 						Obstaculos.push_back(Obstaculo());
-						matrix[i][j]->setObstacle(Obstaculos.size());
+						matrix[i][j]->setObstacle((int)Obstaculos.size());
 						Obstaculos[Obstaculos.size()].componentes.push_back(*matrix[i][j]);
 					}
 				}
@@ -147,7 +147,7 @@ void DataAnalisys::RelacionarObstaculos()
 			{
 				if (Obstaculos[i].getCenter().distanceToPoint(ObstaculosvAnt[j].getPCenter()) < (VCOCHE / 3.6)*0.3)
 				{
-					relacionarVel(i, j, VCOCHE, resolution);
+					relacionarVel(i, j);
 					indice = j;
 				}
 			}

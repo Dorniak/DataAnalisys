@@ -18,7 +18,10 @@
     <ClInclude Include="DataAnalisys.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="LidarDll.h">
+    <ClInclude Include="..\..\Lidar\Lidar\Obstaculo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Lidar\Lidar\Punto3D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -26,8 +29,11 @@
     <ClCompile Include="DataAnalisys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="LidarDLL.dll" />
+    <ClCompile Include="..\..\Lidar\Lidar\Obstaculo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Lidar\Lidar\Punto3D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

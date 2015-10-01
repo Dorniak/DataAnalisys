@@ -1,5 +1,5 @@
 #pragma once
-#include "LidarDLL.h"
+#include "Obstaculo.h"
 #include <math.h>
 #include <vector>
 //TODO: ARREGLAR TAMAÑO DE MATRIZ
@@ -10,18 +10,18 @@ extern int resolution;
 extern int VCOCHE = 1;
 using namespace std;
 using namespace System;
-using namespace LidarDLL;
 ref class DataAnalisys {
 public:
 	//Constructor
 	DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol],int resolucionAngular,int VCoche);
 	//Se encarga de agrupar puntos en obstaculos/
+	
 private:
 	int minimo;
 	int indice;
 	int menor = 4;
 	static vector<Obstaculo> &Obstaculos;
-	static vector<Obstaculo> &ObstaculosvAnt;
+	static vector<Obstaculo> &ObstaculosvAnt{ };
 	cli::array<double>^ listMenor;
 	void Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol]);
 	void prepararObstaculos();
