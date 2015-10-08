@@ -39,7 +39,7 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 					//Se compara cada punto a tratar con sus puntos adyacentes ya tratados
 					if (i > 0)
 					{
-						//Punto de encima 
+						//Punto de encima
 						if (matrix[i - 1][j]->getExists())
 						{
 							listMenor[2] = matrix[i][j]->distanceToPoint(*matrix[i - 1][j]);
@@ -118,7 +118,6 @@ void DataAnalisys::prepararObstaculos()
 	{
 		Obstaculos[i].prepareObstacle();//TODO::Calcular centro,cubo,y todo lo necesario
 	}
-
 }
 void DataAnalisys::EliminarObstaculos()
 {
@@ -134,7 +133,7 @@ void DataAnalisys::EliminarObstaculos()
 }
 void DataAnalisys::RelacionarObstaculos()
 {
-	//TODO::Ajustar variables para este laser 
+	//TODO::Ajustar variables para este laser
 	//TODO::Revisar la manera en la que se trata el plano
 	//fabs(matrix[i][0].getCentro()->distanciaPunto(matrix[j][1].getCentropred())) < (VCOCHE / 3.6)*0.3
 	for (int i = 0; i < Obstaculos.size(); i++)
@@ -151,7 +150,7 @@ void DataAnalisys::RelacionarObstaculos()
 					indice = j;
 				}
 			}
-			else if (Obstaculos[i].getCenter().distanceToPoint(ObstaculosvAnt[j].getCenter()) < minimo && fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5)
+			else if (Obstaculos[i].getCenter().distanceToPoint(ObstaculosvAnt[j].getCenter()) < minimo /*&& fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5*/)
 			{
 				relacionarPos(i, j, VCOCHE, resolution);
 				indice = j;
@@ -164,9 +163,8 @@ void DataAnalisys::relacionarVel(int i, int j)
 	//TODO::crear las funciones y añadir parametros
 	Obstaculos[i].setDirection(ObstaculosvAnt[j].getCenter());
 	Obstaculos[i].calcCentropred();
-	Obstaculos[i].setVelocity(VCOCHE,resolution);
-	Obstaculos[i].calcTTC(VCOCHE);
-
+	Obstaculos[i].setVelocity(/*VCOCHE,resolution*/);
+	Obstaculos[i].calcTTC(/*VCOCHE*/);
 }
 void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res)
 {
