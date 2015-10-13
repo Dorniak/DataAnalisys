@@ -1,5 +1,5 @@
 #include "DataAnalisys.h"
-DataAnalisys::DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol], int resolucionAngular, int VCoche)
+DataAnalisys::DataAnalisys(cliext::vector<cliext::vector<Punto3D^>> matriz, int resolucionAngular, int VCoche)
 {
 	VCOCHE = VCoche;
 	resolution = resolucionAngular;
@@ -16,7 +16,7 @@ DataAnalisys::DataAnalisys(Punto3D* matriz[tamMatrixFil][tamMatrixCol], int reso
 	//TODO::Calcular TTC
 }
 
-void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
+void DataAnalisys::Segmentacion(cliext::vector<cliext::vector<Punto3D^>^>^ matrix)
 {
 	//Se recorre la matriz linealmente
 	for (int i = 0; i <= tamMatrixFil; i++)
@@ -30,7 +30,7 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 				if (i == 0 && j == 0)
 				{
 					//Mete al final del vector de obstaculos un obstaculo que crea
-					Obstaculos.push_back(Obstaculo());
+					Obstaculos.push_back(gcnew Obstaculo());
 					matrix[i][j]->setObstacle(0);
 					//Accede al obstaculo 0, al vector de componentes, mente el punto en el vector de componentes
 					Obstaculos[0].componentes.push_back(*matrix[i][j]);
@@ -91,14 +91,14 @@ void DataAnalisys::Segmentacion(Punto3D* matrix[tamMatrixFil][tamMatrixCol])
 						//A pesar de tener puntos cerca no cumplen la condicion de vecindad por tanto se crea un nuevo obstaculo
 						else
 						{
-							Obstaculos.push_back(Obstaculo());
+							Obstaculos.push_back(gcnew Obstaculo());
 							matrix[i][j]->setObstacle((int)Obstaculos.size());
 							Obstaculos[Obstaculos.size()].componentes.push_back(*matrix[i][j]);
 						}
 					}//En este caso el punto no tiene puntos validos a su alrededor
 					else
 					{
-						Obstaculos.push_back(Obstaculo());
+						Obstaculos.push_back(gcnew Obstaculo());
 						matrix[i][j]->setObstacle((int)Obstaculos.size());
 						Obstaculos[Obstaculos.size()].componentes.push_back(*matrix[i][j]);
 					}
@@ -144,13 +144,13 @@ void DataAnalisys::RelacionarObstaculos()
 		{
 			if (ObstaculosvAnt[j].getVelocity() >= 1)
 			{
-				if (Obstaculos[i].getCenter().distanceToPoint(ObstaculosvAnt[j].getPCenter()) < (VCOCHE / 3.6)*0.3)
+				if (Obstaculos[i].getCenter()->distanceToPoint(ObstaculosvAnt[j].getPCenter()) < (VCOCHE / 3.6)*0.3)
 				{
 					relacionarVel(i, j);
 					indice = j;
 				}
 			}
-			else if (Obstaculos[i].getCenter().distanceToPoint(ObstaculosvAnt[j].getCenter()) < minimo /*&& fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5*/)
+			else if (Obstaculos[i].getCenter()->distanceToPoint(ObstaculosvAnt[j].getCenter()) < minimo /*&& fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5*/)
 			{
 				relacionarPos(i, j, VCOCHE, resolution);
 				indice = j;
@@ -179,7 +179,7 @@ bool DataAnalisys::comprobarBloqueo()
 	//Devuelve true cuando hay bloqueo
 	return false;
 }
-bool DataAnalisys::puntosCercanos(Punto3D *p1, Punto3D *p2)
+bool DataAnalisys::puntosCercanos(Punto3D ^p1, Punto3D ^p2)
 {
 	double s0 = 1.4;
 	double s1 = sqrt(2 - (2 * cos(2 * resolution*PI / 180)));
@@ -188,5 +188,5 @@ bool DataAnalisys::puntosCercanos(Punto3D *p1, Punto3D *p2)
 		r = p2->getDistance();
 	double tolererancia = s0 + (s1 * r);
 
-	return (tolererancia > p1->distanceToPoint(*p2));
+	return (tolererancia > p1->distanceToPoint(p2));
 }
