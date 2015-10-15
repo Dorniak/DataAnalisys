@@ -15,7 +15,7 @@ using namespace System;
 ref class DataAnalisys {
 public:
 	//Constructor
-	DataAnalisys(cliext::vector<cliext::vector<Punto3D^>> matriz, int resolucionAngular, int VCoche);
+	DataAnalisys(cliext::vector<cliext::vector<Punto3D>> matriz, int resolucionAngular, int VCoche);
 	//Se encarga de agrupar puntos en obstaculos/
 
 private:
@@ -26,12 +26,12 @@ private:
 	//cliext::vector<Obstaculo> Obstaculos;para clases referenciadas
 	cliext::vector<Obstaculo> ObstaculosvAnt;
 	double listMenor[4];
-	void Segmentacion(cliext::vector<cliext::vector<Punto3D^>^>^ matrix);
+	void Segmentacion(cliext::vector<cliext::vector<Punto3D>> matrix);
 	void prepararObstaculos();
 	void EliminarObstaculos();
 	void RelacionarObstaculos();
 	void relacionarVel(int i, int j);
 	void relacionarPos(int i, int j, int VelC, int Res);
 	bool comprobarBloqueo();
-	bool puntosCercanos(Punto3D ^p1, Punto3D ^p2);
+	bool puntosCercanos(Punto3D p1, Punto3D p2);
 };
