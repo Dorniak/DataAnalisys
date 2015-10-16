@@ -55,7 +55,7 @@ void DataAnalisys::Segmentacion(cliext::vector<cliext::vector<Punto3D>> matrix)
 						if (i > 0 && j < tamMatrixCol)
 						{
 							//Punto de encima a la derecha
-							if (((cliext::vector<Punto3D>)matrix[i-1])[j + 1]->getExists())
+							if (((cliext::vector<Punto3D>)matrix[i-1])[j + 1].getDistance()<0)
 								listMenor[3] = ((cliext::vector<Punto3D>)matrix[i])[j].distanceToPoint(((cliext::vector<Punto3D>)matrix[i-1])[j + 1]);
 						}
 					}
@@ -84,7 +84,7 @@ void DataAnalisys::Segmentacion(cliext::vector<cliext::vector<Punto3D>> matrix)
 						if (menor = 3) { t = 0, s = -1; }
 						if (puntosCercanos(((cliext::vector<Punto3D>)matrix[i])[j], ((cliext::vector<Punto3D>)matrix[i+t])[j + s]))
 						{
-							int p = ((cliext::vector<Punto3D>)matrix[i+t])[j + s].getObs();
+							int p = ((cliext::vector<Punto3D>)matrix[i+t])[j + s].getObstacle();
 							((cliext::vector<Punto3D>)matrix[i])[j].setObstacle(p);
 							Obstaculos[p].components.push_back(((cliext::vector<Punto3D>)matrix[i])[j]);
 						}
@@ -92,14 +92,14 @@ void DataAnalisys::Segmentacion(cliext::vector<cliext::vector<Punto3D>> matrix)
 						else
 						{
 							Obstaculos.push_back(gcnew Obstaculo());
-							((cliext::vector<Punto3D>)matrix[i])[j]->setObstacle((int)Obstaculos.size());
+							((cliext::vector<Punto3D>)matrix[i])[j].setObstacle((int)Obstaculos.size());
 							Obstaculos[Obstaculos.size()].components.push_back(((cliext::vector<Punto3D>)matrix[i])[j]);
 						}
 					}//En este caso el punto no tiene puntos validos a su alrededor
 					else
 					{
 						Obstaculos.push_back(gcnew Obstaculo());
-						((cliext::vector<Punto3D>)matrix[i])[j]->setObstacle((int)Obstaculos.size());
+						((cliext::vector<Punto3D>)matrix[i])[j].setObstacle((int)Obstaculos.size());
 						Obstaculos[Obstaculos.size()].components.push_back(((cliext::vector<Punto3D>)matrix[i])[j]);
 					}
 				}
@@ -144,13 +144,13 @@ void DataAnalisys::RelacionarObstaculos()
 		{
 			if (ObstaculosvAnt[j].getVelocity() >= 1)
 			{
-				if (Obstaculos[i].getCenter()->distanceToPoint(ObstaculosvAnt[j].getPrediceCenter()) < (VCOCHE / 3.6)*0.3)
+				if (Obstaculos[i].getCenter().distanceToPoint(ObstaculosvAnt[j].getPrediceCenter()) < (VCOCHE / 3.6)*0.3)
 				{
 					relacionarVel(i, j);
 					indice = j;
 				}
 			}
-			else if (Obstaculos[i].getCenter()->distanceToPoint(ObstaculosvAnt[j].getCenter()) < minimo /*&& fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5*/)
+			else if (Obstaculos[i].getCenter().distanceToPoint(ObstaculosvAnt[j].getCenter()) < minimo /*&& fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5*/)
 			{
 				relacionarPos(i, j, VCOCHE, resolution);
 				indice = j;
