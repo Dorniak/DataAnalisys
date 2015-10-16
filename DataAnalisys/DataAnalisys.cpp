@@ -1,7 +1,6 @@
 #include "DataAnalisys.h"
 DataAnalisys::DataAnalisys(cliext::vector<cliext::vector<Punto3D>> matriz, int resolucionAngular, int VCoche)
 {
-	((cliext::vector<Punto3D>)matriz[1])[1].getAngle;
 	VCOCHE = VCoche;
 	resolution = resolucionAngular;
 	if (!comprobarBloqueo())
@@ -25,7 +24,7 @@ void DataAnalisys::Segmentacion(cliext::vector<cliext::vector<Punto3D>> matrix)
 		for (int j = 0; j <= tamMatrixCol; i++)
 		{
 			//Se comprubea si el punto a tratar Existe
-			if (((cliext::vector<Punto3D>)matrix[i])[j]->getExists())
+			if (((cliext::vector<Punto3D>)matrix[i])[j].getDistance()>0)
 			{
 				//En caso de que sea el primer punto se asigna directamente al obstaculo 1
 				if (i == 0 && j == 0)
@@ -41,30 +40,30 @@ void DataAnalisys::Segmentacion(cliext::vector<cliext::vector<Punto3D>> matrix)
 					if (i > 0)
 					{
 						//Punto de encima
-						if (((cliext::vector<Punto3D>)matrix[i-1])[j]->getExists())
+						if (((cliext::vector<Punto3D>)matrix[i-1])[j].getDistance()>0)
 						{
-							listMenor[2] = ((cliext::vector<Punto3D>)matrix[i])[j]->distanceToPoint(((cliext::vector<Punto3D>)matrix[i-1])[j]);
+							listMenor[2] = ((cliext::vector<Punto3D>)matrix[i])[j].distanceToPoint(((cliext::vector<Punto3D>)matrix[i-1])[j]);
 						}
 						if (j > 0)
 						{
 							//Punto de encima a la izquierda
-							if (((cliext::vector<Punto3D>)matrix[i - 1])[j - 1]->getExists())
+							if (((cliext::vector<Punto3D>)matrix[i - 1])[j - 1].getDistance()>0)
 							{
-								listMenor[1] = ((cliext::vector<Punto3D>)matrix[i])[j]->distanceToPoint(((cliext::vector<Punto3D>)matrix[i-1])[j - 1]);
+								listMenor[1] = ((cliext::vector<Punto3D>)matrix[i])[j].distanceToPoint(((cliext::vector<Punto3D>)matrix[i-1])[j - 1]);
 							}
 						}
 						if (i > 0 && j < tamMatrixCol)
 						{
 							//Punto de encima a la derecha
 							if (((cliext::vector<Punto3D>)matrix[i-1])[j + 1]->getExists())
-								listMenor[3] = ((cliext::vector<Punto3D>)matrix[i])[j]->distanceToPoint(((cliext::vector<Punto3D>)matrix[i-1])[j + 1]);
+								listMenor[3] = ((cliext::vector<Punto3D>)matrix[i])[j].distanceToPoint(((cliext::vector<Punto3D>)matrix[i-1])[j + 1]);
 						}
 					}
 					if (j > 0)
 					{
 						//Punto de la izquierda
-						if (((cliext::vector<Punto3D>)matrix[i])[j - 1]->getExists())
-							listMenor[4] = ((cliext::vector<Punto3D>)matrix[i])[j]->distanceToPoint(((cliext::vector<Punto3D>)matrix[i])[j - 1]);
+						if (((cliext::vector<Punto3D>)matrix[i])[j - 1].getDistance()>0)
+							listMenor[4] = ((cliext::vector<Punto3D>)matrix[i])[j].distanceToPoint(((cliext::vector<Punto3D>)matrix[i])[j - 1]);
 					}
 					//Se coge el punto mas cercano al que estamos tratando y se incluye en su obstaculo
 					if (listMenor[0] != 0) { menor = 0; }
@@ -180,14 +179,14 @@ bool DataAnalisys::comprobarBloqueo()
 	//Devuelve true cuando hay bloqueo
 	return false;
 }
-bool DataAnalisys::puntosCercanos(Punto3D ^ p1, Punto3D ^ p2)
+bool DataAnalisys::puntosCercanos(Punto3D p1, Punto3D p2)
 {
 	double s0 = 1.4;
 	double s1 = sqrt(2 - (2 * cos(2 * resolution*PI / 180)));
-	double r = p1->getDistance();
-	if (p1->getDistance() > p2->getDistance())
-		r = p2->getDistance();
+	double r = p1.getDistance();
+	if (p1.getDistance() > p2.getDistance())
+		r = p2.getDistance();
 	double tolererancia = s0 + (s1 * r);
 
-	return (tolererancia > p1->distanceToPoint(p2));
+	return (tolererancia > p1.distanceToPoint(p2));
 }

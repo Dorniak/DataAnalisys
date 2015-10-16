@@ -33,5 +33,5 @@ private:
 	void relacionarVel(int i, int j);
 	void relacionarPos(int i, int j, int VelC, int Res);
 	bool comprobarBloqueo();
-	bool puntosCercanos(Punto3D ^ p1, Punto3D ^ p2);
+	bool puntosCercanos(Punto3D p1, Punto3D p2);
 };
