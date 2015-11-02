@@ -16,25 +16,23 @@ using namespace System::Collections::Generic;
 ref class DataAnalisys {
 public:
 	//Constructor
-	DataAnalisys(cliext::vector<Punto3D> matriz, int resolucionAngular, int VCoche);
+	DataAnalisys(List<Punto3D^>^ matriz, int resolucionAngular, int VCoche);
 	//Se encarga de agrupar puntos en obstaculos/
 
 private:
 	int minimo;
 	int indice;
 	int menor = 4;
-	cliext::vector<Obstaculo> Obstaculos;
-	//cliext::vector<Obstaculo> Obstaculos;para clases referenciadas
-	cliext::vector<Obstaculo> ObstaculosvAnt;
-	//double listMenor[4];
+	List<Obstaculo^>^ Obstaculos = gcnew List<Obstaculo^>();
+	List<Obstaculo^>^ ObstaculosvAnt = gcnew List<Obstaculo^>();
 	List<double>^ listMenor = gcnew List<double>();
-	void Segmentacion(cliext::vector<Punto3D> matrix);
+	void Segmentacion(List<Punto3D^>^ matrix);
 	void prepararObstaculos();
 	void EliminarObstaculos();
 	void RelacionarObstaculos();
 	void relacionarVel(int i, int j);
 	void relacionarPos(int i, int j, int VelC, int Res);
 	bool comprobarBloqueo();
-	bool puntosCercanos(Punto3D p1, Punto3D p2);
+	bool puntosCercanos(Punto3D^ p1, Punto3D^ p2);
 	int convaPos(int a, int b);
 };
