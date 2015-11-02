@@ -11,6 +11,7 @@ static int resolution = 1;
 static int VCOCHE = 1;
 using namespace std;
 using namespace System;
+using namespace System::Collections::Generic;
 //using namespace cliext;
 ref class DataAnalisys {
 public:
@@ -25,7 +26,8 @@ private:
 	cliext::vector<Obstaculo> Obstaculos;
 	//cliext::vector<Obstaculo> Obstaculos;para clases referenciadas
 	cliext::vector<Obstaculo> ObstaculosvAnt;
-	double listMenor[4];
+	//double listMenor[4];
+	List<double>^ listMenor = gcnew List<double>();
 	void Segmentacion(cliext::vector<Punto3D> matrix);
 	void prepararObstaculos();
 	void EliminarObstaculos();
