@@ -89,7 +89,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>E:\Visual Studio\Projects\DataAnalisys\DataAnalisys</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>E:\Visual Studio\Projects\Lidar\Lidar</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>

@@ -1,58 +1,71 @@
 #include "DataAnalisys.h"
-DataAnalisys::DataAnalisys(List<Punto3D^>^ matriz, int resolucionAngular, int VCoche)
+DataAnalisys::DataAnalisys()
+{
+	indice = -1;
+	menor = -1;
+	for (int k = 0; k < 4; k++)
+	{
+		listMenor[k] = 0;
+	}
+}
+
+void DataAnalisys::Analisys(List<Punto3D^>^ matriz, double resolucionAngular, double VCoche, double &consigna_velocidad, double &consigna_volante)
 {
 	VCOCHE = VCoche;
 	resolution = resolucionAngular;
-	if (!comprobarBloqueo())
-	{
-		Segmentacion(matriz);
-		EliminarObstaculos();
-		prepararObstaculos();
-		RelacionarObstaculos();
+	if (VCOCHE > 5) {
+		if (!comprobarBloqueo())
+		{
+			Segmentacion(matriz);
+			EliminarObstaculos();
+			prepararObstaculos();
+			RelacionarObstaculos();
+			//TODO::Hacer el adelantamiento al final
+			//TODO::Calcular TTC
+		}
+		else consigna_velocidad = 0;
 	}
 	ObstaculosvAnt = Obstaculos;
 	Obstaculos->Clear();
-	//TODO::Hacer el adelantamiento al final
-	//TODO::Calcular TTC
 }
 
 void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix)
 {
 	//Se recorre la matriz linealmente
-	for (int i = 0; i <= tamMatrixFil; i++)
+	for (int i = 0; i <= NUMERO_FILAS; i++)
 	{
-		for (int j = 0; j <= tamMatrixCol; i++)
+		for (int j = 0; j <= NUMERO_COLUMNAS; i++)
 		{
 			//Se comprubea si el punto a tratar Existe
-			if (matrix[convaPos(i,j)]->getDistance()>0)
+			if (matrix[convaPos(i, j)]->getDistance() > 0)
 			{
 				//En caso de que sea el primer punto se asigna directamente al obstaculo 1
 				if (i == 0 && j == 0)
 				{
 					//Mete al final del vector de obstaculos un obstaculo que crea
 					Obstaculos->Add(gcnew Obstaculo());
-					matrix[convaPos(i,j)]->setObstacle(0);
+					matrix[convaPos(i, j)]->setObstacle(0);
 					//Accede al obstaculo 0, al vector de componentes, mente el punto en el vector de componentes
-					Obstaculos[0]->components->Add(matrix[convaPos(i,j)]);
+					Obstaculos[0]->components->Add(matrix[convaPos(i, j)]);
 				}
 				else {
 					//Se compara cada punto a tratar con sus puntos adyacentes ya tratados
 					if (i > 0)
 					{
 						//Punto de encima
-						if (matrix[convaPos(i-1,j)]->getDistance()>0)
+						if (matrix[convaPos(i - 1, j)]->getDistance() > 0)
 						{
-							listMenor[2] = matrix[convaPos(i,j)]->distanceToPoint(matrix[convaPos(i+1,j)]);
+							listMenor[2] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i + 1, j)]);
 						}
 						if (j > 0)
 						{
 							//Punto de encima a la izquierda
-							if (matrix[convaPos(i-1,j-1)]->getDistance()>0)
+							if (matrix[convaPos(i - 1, j - 1)]->getDistance() > 0)
 							{
-								listMenor[1] = matrix[convaPos(i,j)]->distanceToPoint(matrix[convaPos(i-1,j-1)]);
+								listMenor[1] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i - 1, j - 1)]);
 							}
 						}
-						if (i > 0 && j < tamMatrixCol)
+						if (i > 0 && j < NUMERO_COLUMNAS)
 						{
 							//Punto de encima a la derecha
 							if (matrix[convaPos(i - 1, j + 1)]->getDistance() < 0)
@@ -62,8 +75,8 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix)
 					if (j > 0)
 					{
 						//Punto de la izquierda
-						if (matrix[convaPos(i, j-1)]->getDistance()>0)
-							listMenor[4] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i, j-1)]);
+						if (matrix[convaPos(i, j - 1)]->getDistance()>0)
+							listMenor[4] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i, j - 1)]);
 					}
 					//Se coge el punto mas cercano al que estamos tratando y se incluye en su obstaculo
 					if (listMenor[0] != 0) { menor = 0; }
@@ -71,7 +84,7 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix)
 					else if (listMenor[2] != 0) { menor = 2; }
 					else if (listMenor[3] != 0) { menor = 3; }
 					//Si los puntos adyacentes no existen se incluye este punto en un obstaculo
-					if (menor != 4)
+					if (menor != -1)
 					{
 						for (int b = menor; b < 4; b++)
 						{
@@ -82,9 +95,9 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix)
 						if (menor = 1) { t = -1, s = 0; }
 						if (menor = 2) { t = -1, s = 1; }
 						if (menor = 3) { t = 0, s = -1; }
-						if (puntosCercanos(matrix[convaPos(i, j)], matrix[convaPos(i+t, j+s)]))
+						if (puntosCercanos(matrix[convaPos(i, j)], matrix[convaPos(i + t, j + s)]))
 						{
-							int p = matrix[convaPos(i+t, j+s)]->getObstacle();
+							int p = matrix[convaPos(i + t, j + s)]->getObstacle();
 							matrix[convaPos(i, j)]->setObstacle(p);
 							Obstaculos[p]->components->Add(matrix[convaPos(i, j)]);
 						}
@@ -103,11 +116,8 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix)
 						Obstaculos[Obstaculos->Count]->components->Add(matrix[convaPos(i, j)]);
 					}
 				}
-				for (int k = 0; k < 4; k++)
-				{
-					listMenor[k] = 0;
-				}
-				menor = 4;
+
+				menor = -1;
 			}
 		}
 	}
@@ -121,10 +131,9 @@ void DataAnalisys::prepararObstaculos()
 }
 void DataAnalisys::EliminarObstaculos()
 {
-
 	for (int p = 0; p < Obstaculos->Count; p++)
 	{
-		if (Obstaculos[p]->components->Count < 20)
+		if (Obstaculos[p]->components->Count < TAMAÑO_MINIMO_OBSTACULO)
 		{
 			//TODO::Ajustar el numero minimo de puntos para considerarlo un obstaculo
 			Obstaculos->RemoveAt(p);
@@ -139,19 +148,19 @@ void DataAnalisys::RelacionarObstaculos()
 	//fabs(matrix[i][0].getCentro()->distanciaPunto(matrix[j][1].getCentropred())) < (VCOCHE / 3.6)*0.3
 	for (int i = 0; i < Obstaculos->Count; i++)
 	{
-		minimo = 2;
 		indice = -1;
 		for (int j = 0; j < ObstaculosvAnt->Count; j++)
 		{
 			if (ObstaculosvAnt[j]->getVelocity() >= 1)
 			{
-				if (Obstaculos[i]->getCenter()->distanceToPoint(ObstaculosvAnt[j]->getPrediceCenter()) < (VCOCHE / 3.6)*0.3)
+				//0.3 es la distancia maxima que que puede recorrer entre barridos
+				if (Obstaculos[i]->getCenter()->distanceToPoint(ObstaculosvAnt[j]->getPrediceCenter()) < (VCOCHE / 3.6) * TIEMPO_MARGEN)// POrque 0.3??  = 0.0833
 				{
 					relacionarVel(i, j);
 					indice = j;
 				}
 			}
-			else if (Obstaculos[i]->getCenter()->distanceToPoint(ObstaculosvAnt[j]->getCenter()) < minimo /*&& fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5*/)
+			else if (Obstaculos[i]->getCenter()->distanceToPoint(ObstaculosvAnt[j]->getCenter()) < DISTANCIA_MAXIMA /*&& fabs(Obstaculos[i].getYaw() - Obstaculos[i].getYaw()) < 5*/)
 			{
 				relacionarPos(i, j, VCOCHE, resolution);
 				indice = j;
@@ -164,7 +173,7 @@ void DataAnalisys::relacionarVel(int i, int j)
 	//TODO::crear las funciones y añadir parametros
 	Obstaculos[i]->setDirection(ObstaculosvAnt[j]->getCenter());
 	Obstaculos[i]->calculatePrediceCenter();
-	Obstaculos[i]->setVelocity(VCOCHE,resolution);
+	Obstaculos[i]->setVelocity(VCOCHE, resolution);
 	Obstaculos[i]->calculateTimeToCollision();
 }
 void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res)

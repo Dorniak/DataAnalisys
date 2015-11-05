@@ -4,11 +4,13 @@
 
 //#include <cliext/vector> para clases referenciadas
 //TODO: ARREGLAR TAMAÑO DE MATRIZ
-#define tamMatrixFil 50
-#define tamMatrixCol 50
+#define NUMERO_FILAS 50
+#define NUMERO_COLUMNAS 50
+#define TAMAÑO_MINIMO_OBSTACULO 20
+#define TIEMPO_MARGEN 0.3 //TODO: Ajustar parametro
+#define DISTANCIA_MAXIMA 2
 #define PI 3.14159265
-static int resolution = 1;
-static int VCOCHE = 1;
+
 using namespace std;
 using namespace System;
 using namespace System::Collections::Generic;
@@ -16,13 +18,15 @@ using namespace System::Collections::Generic;
 ref class DataAnalisys {
 public:
 	//Constructor
-	DataAnalisys(List<Punto3D^>^ matriz, int resolucionAngular, int VCoche);
+	DataAnalisys();
+	void Analisys(List<Punto3D^>^ matriz, double resolucionAngular, double VCoche, double &consigna_velocidad, double &consigna_volante);
 	//Se encarga de agrupar puntos en obstaculos/
 
 private:
-	int minimo;
 	int indice;
-	int menor = 4;
+	int menor;
+	double VCOCHE;
+	double resolution;
 	List<Obstaculo^>^ Obstaculos = gcnew List<Obstaculo^>();
 	List<Obstaculo^>^ ObstaculosvAnt = gcnew List<Obstaculo^>();
 	List<double>^ listMenor = gcnew List<double>();
