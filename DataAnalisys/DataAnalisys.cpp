@@ -17,11 +17,12 @@ void DataAnalisys::Analisys(List<Punto3D^>^ matriz, double resolucionAngular, do
 		if (!comprobarBloqueo())
 		{
 			Segmentacion(matriz);
+			//TODO::Identificar tipo de obstaculo
 			EliminarObstaculos();
 			prepararObstaculos();
 			RelacionarObstaculos();
 			//TODO::Hacer el adelantamiento al final
-			//TODO::Calcular TTC
+			//TODO::Calcular TTC y actualizar consignas
 		}
 		else consigna_velocidad = 0;
 	}
@@ -126,7 +127,7 @@ void DataAnalisys::prepararObstaculos()
 {
 	for (int i = 0; i < Obstaculos->Count; i++)
 	{
-		//Obstaculos[i].prepareObstacle();//TODO::Calcular centro,cubo,y todo lo necesario
+		Obstaculos[i]->prepareObstacle();//TODO::Calcular centro,cubo,y todo lo necesario
 	}
 }
 void DataAnalisys::EliminarObstaculos()
@@ -174,7 +175,7 @@ void DataAnalisys::relacionarVel(int i, int j)
 	Obstaculos[i]->setDirection(ObstaculosvAnt[j]->getCenter());
 	Obstaculos[i]->calculatePrediceCenter();
 	Obstaculos[i]->setVelocity(VCOCHE, resolution);
-	Obstaculos[i]->calculateTimeToCollision();
+	Obstaculos[i]->calculateTimeToCollision(VCOCHE);
 }
 void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res)
 {
