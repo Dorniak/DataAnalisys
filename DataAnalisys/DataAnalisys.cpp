@@ -8,15 +8,21 @@ DataAnalisys::DataAnalisys()
 		listMenor[k] = 0;
 	}
 }
-
-void DataAnalisys::Analisys(List<Punto3D^>^ matriz, double resolucionAngular, double VCoche, double &consigna_velocidad, double &consigna_volante)
+//matriz::Lista de puntos
+//resolucionAngular::resolucion del laser
+//Vcoche::velocidad actual del coche
+//consigna velocidad:: puntero para devolucion de parametro de velocidad
+//consigna volante:: puntero para devolucion de parametro de volante
+//apertura::Angulo de interes de lectura en grados
+void DataAnalisys::Analisys(List<Punto3D^>^ matriz, double resolucionAngular, double VCoche, double &consigna_velocidad, double &consigna_volante, double apertura)
 {
 	VCOCHE = VCoche;
 	resolution = resolucionAngular;
+	NUMERO_COLUMNAS = matriz->Count/NUMERO_FILAS;
 	if (VCOCHE > 5) {
-		if (!comprobarBloqueo())
+		if (!comprobarBloqueo(matriz))
 		{
-			Segmentacion(matriz);
+			Segmentacion(matriz,apertura);
 			//TODO::Identificar tipo de obstaculo
 			EliminarObstaculos();
 			prepararObstaculos();
@@ -30,12 +36,15 @@ void DataAnalisys::Analisys(List<Punto3D^>^ matriz, double resolucionAngular, do
 	Obstaculos->Clear();
 }
 
-void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix)
+void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix,double apertura)
 {
+	int aprr = (apertura / 2)/resolution;
+	int inicio = (NUMERO_COLUMNAS / 2)-aprr;
+	int final= (NUMERO_COLUMNAS / 2)+aprr;
 	//Se recorre la matriz linealmente
 	for (int i = 0; i <= NUMERO_FILAS; i++)
 	{
-		for (int j = 0; j <= NUMERO_COLUMNAS; i++)
+		for (int j = inicio; j < final; j++)
 		{
 			//Se comprubea si el punto a tratar Existe
 			if (matrix[convaPos(i, j)]->getDistance() > 0)
@@ -52,32 +61,32 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix)
 				else {
 					//Se compara cada punto a tratar con sus puntos adyacentes ya tratados
 					if (i > 0)
-					{
+					{//Pultiplicar a cada punto por un valor de rango para hacer el tanto por 1
 						//Punto de encima
 						if (matrix[convaPos(i - 1, j)]->getDistance() > 0)
 						{
-							listMenor[2] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i + 1, j)]);
+							listMenor[2] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i + 1, j)]);//   /2
 						}
 						if (j > 0)
 						{
 							//Punto de encima a la izquierda
 							if (matrix[convaPos(i - 1, j - 1)]->getDistance() > 0)
 							{
-								listMenor[1] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i - 1, j - 1)]);
+								listMenor[1] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i - 1, j - 1)]);  // //2*res h
 							}
 						}
 						if (i > 0 && j < NUMERO_COLUMNAS)
 						{
 							//Punto de encima a la derecha
 							if (matrix[convaPos(i - 1, j + 1)]->getDistance() < 0)
-								listMenor[3] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i - 1, j + 1)]);
+								listMenor[3] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i - 1, j + 1)]);// /2*res h
 						}
 					}
 					if (j > 0)
 					{
 						//Punto de la izquierda
 						if (matrix[convaPos(i, j - 1)]->getDistance()>0)
-							listMenor[4] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i, j - 1)]);
+							listMenor[4] = matrix[convaPos(i, j)]->distanceToPoint(matrix[convaPos(i, j - 1)]);// /res h
 					}
 					//Se coge el punto mas cercano al que estamos tratando y se incluye en su obstaculo
 					if (listMenor[0] != 0) { menor = 0; }
@@ -184,10 +193,18 @@ void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res)
 	Obstaculos[i]->calculatePrediceCenter();
 	Obstaculos[i]->setVelocity(VCOCHE, resolution);
 }
-bool DataAnalisys::comprobarBloqueo()
+bool DataAnalisys::comprobarBloqueo(List<Punto3D^>^ matriz)
 {
 	//TODO::revisar si hay algo delante del coche y mandar señal de frenado
 	//Devuelve true cuando hay bloqueo
+	int medio = matriz->Count / 2;
+	for (int k = medio - 20; k < medio + 20; k++) {
+		for (int i = 0; i < NUMERO_FILAS; i++) {
+			if (matriz[convaPos(i, k)]->getDistance() < 15) {
+				return true;
+			}
+		}
+	}
 	return false;
 }
 bool DataAnalisys::puntosCercanos(Punto3D^ p1, Punto3D^ p2)
