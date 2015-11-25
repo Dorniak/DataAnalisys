@@ -27,7 +27,6 @@ void DataAnalisys::Analisys(List<Punto3D^>^ matriz, double resolucionAngular, do
 			EliminarObstaculos();
 			prepararObstaculos();
 			RelacionarObstaculos();
-			//TODO::Hacer el adelantamiento al final
 			//TODO::Calcular TTC y actualizar consignas
 		}
 		else consigna_velocidad = 0;
@@ -61,7 +60,8 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix,double apertura)
 				else {
 					//Se compara cada punto a tratar con sus puntos adyacentes ya tratados
 					if (i > 0)
-					{//Pultiplicar a cada punto por un valor de rango para hacer el tanto por 1
+					{//Multiplicar a cada punto por un valor de rango para hacer el tanto por 1
+						//Resolver ambiguedades
 						//Punto de encima
 						if (matrix[convaPos(i - 1, j)]->getDistance() > 0)
 						{
@@ -93,6 +93,9 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix,double apertura)
 					else if (listMenor[1] != 0) { menor = 1; }
 					else if (listMenor[2] != 0) { menor = 2; }
 					else if (listMenor[3] != 0) { menor = 3; }
+					//TODO::Recorrer la lista y eliminar puntos no validos
+					//resolver ambiguedades:si un punto puede pertenecer a dos obstaculos unir dichos obstaculos
+
 					//Si los puntos adyacentes no existen se incluye este punto en un obstaculo
 					if (menor != -1)
 					{
@@ -154,8 +157,6 @@ void DataAnalisys::EliminarObstaculos()
 void DataAnalisys::RelacionarObstaculos()
 {
 	//TODO::Ajustar variables para este laser
-	//TODO::Revisar la manera en la que se trata el plano
-	//fabs(matrix[i][0].getCentro()->distanciaPunto(matrix[j][1].getCentropred())) < (VCOCHE / 3.6)*0.3
 	for (int i = 0; i < Obstaculos->Count; i++)
 	{
 		indice = -1;
@@ -180,7 +181,6 @@ void DataAnalisys::RelacionarObstaculos()
 }
 void DataAnalisys::relacionarVel(int i, int j)
 {
-	//TODO::crear las funciones y añadir parametros
 	Obstaculos[i]->setDirection(ObstaculosvAnt[j]->getCenter());
 	Obstaculos[i]->calculatePrediceCenter();
 	Obstaculos[i]->setVelocity(VCOCHE, resolution);
@@ -188,14 +188,12 @@ void DataAnalisys::relacionarVel(int i, int j)
 }
 void DataAnalisys::relacionarPos(int i, int j, int VelC, int Res)
 {
-	//TODO::crear las funciones y añadir parametros
 	Obstaculos[i]->setDirection(ObstaculosvAnt[j]->getCenter());
 	Obstaculos[i]->calculatePrediceCenter();
 	Obstaculos[i]->setVelocity(VCOCHE, resolution);
 }
 bool DataAnalisys::comprobarBloqueo(List<Punto3D^>^ matriz)
 {
-	//TODO::revisar si hay algo delante del coche y mandar señal de frenado
 	//Devuelve true cuando hay bloqueo
 	int medio = matriz->Count / 2;
 	for (int k = medio - 20; k < medio + 20; k++) {

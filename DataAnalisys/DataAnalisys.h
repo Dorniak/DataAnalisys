@@ -3,7 +3,6 @@
 #include <math.h>
 
 //#include <cliext/vector> para clases referenciadas
-//TODO: ARREGLAR TAMAÑO DE MATRIZ
 #define NUMERO_FILAS 16 //Coincide con el numero de canales
 #define TAMAÑO_MINIMO_OBSTACULO 20
 #define TIEMPO_MARGEN 0.3 //TODO: Ajustar parametro
