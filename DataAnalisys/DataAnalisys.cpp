@@ -14,10 +14,20 @@ DataAnalisys::DataAnalisys()
 //consigna velocidad:: puntero para devolucion de parametro de velocidad
 //consigna volante:: puntero para devolucion de parametro de volante
 //apertura::Angulo de interes de lectura en grados
-void DataAnalisys::Analisys(List<Punto3D^>^ matriz, double resolucionAngular, double VCoche, double &consigna_velocidad, double &consigna_volante, double apertura)
-{
-	VCOCHE = VCoche;
-	resolution = resolucionAngular;
+void DataAnalisys::Analisys(cli::array<Object^> ^ data) {
+
+	parameters_in = (cli::array<Object^>^)data;
+	if (!thread_analysis || thread_analysis->ThreadState != System::Threading::ThreadState::Running) {
+		thread_analysis = gcnew Thread(gcnew ThreadStart(this, &DataAnalisys::AnalisysThread));
+		thread_analysis->Start();
+	}
+	parameters_in[10] = thread_analysis->ThreadState;
+}
+//List<Punto3D^>^ matriz, double resolucionAngular, double &consigna_velocidad, double &consigna_volante, double apertura
+void DataAnalisys::AnalisysThread(){
+
+	VCOCHE = (double)parameters_in[10];
+	resolution = (double)parameters_in[10];//resolucionAngular;
 	NUMERO_COLUMNAS = matriz->Count/NUMERO_FILAS;
 	if (VCOCHE > 5) {
 		if (!comprobarBloqueo(matriz))

@@ -12,12 +12,15 @@
 using namespace std;
 using namespace System;
 using namespace System::Collections::Generic;
+using namespace System::Threading;
 //using namespace cliext;
 ref class DataAnalisys {
 public:
 	//Constructor
 	DataAnalisys();
-	void Analisys(List<Punto3D^>^ matriz, double resolucionAngular, double VCoche, double &consigna_velocidad, double &consigna_volante, double apertura);
+	void Analisys(cli::array<Object^>^ data);
+	void AnalisysThread();
+	//void Analisys(List<Punto3D^>^ matriz, double resolucionAngular, double VCoche, double &consigna_velocidad, double &consigna_volante, double apertura);
 	//Se encarga de agrupar puntos en obstaculos/
 
 private:
@@ -38,4 +41,6 @@ private:
 	bool comprobarBloqueo(List<Punto3D^>^ matriz);
 	bool puntosCercanos(Punto3D^ p1, Punto3D^ p2);
 	int convaPos(int a, int b);
+	Thread^ thread_analysis;
+	cli::array<Object^> ^ parameters_in;
 };
