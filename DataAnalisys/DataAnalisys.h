@@ -24,6 +24,9 @@ public:
 	//Se encarga de agrupar puntos en obstaculos/
 
 private:
+	double ^ consigna_velocidad;
+	double ^ consigna_volante;
+	double apertura;
 	int indice;
 	int menor;
 	double VCOCHE;
@@ -41,6 +44,7 @@ private:
 	bool comprobarBloqueo(List<Punto3D^>^ matriz);
 	bool puntosCercanos(Punto3D^ p1, Punto3D^ p2);
 	int convaPos(int a, int b);
+	List<Punto3D^>^ matriz;
 	Thread^ thread_analysis;
 	cli::array<Object^> ^ parameters_in;
 };

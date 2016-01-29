@@ -23,12 +23,26 @@ void DataAnalisys::Analisys(cli::array<Object^> ^ data) {
 	}
 	parameters_in[10] = thread_analysis->ThreadState;
 }
-//List<Punto3D^>^ matriz, double resolucionAngular, double &consigna_velocidad, double &consigna_volante, double apertura
-void DataAnalisys::AnalisysThread(){
 
-	VCOCHE = (double)parameters_in[10];
-	resolution = (double)parameters_in[10];//resolucionAngular;
+/*parameters_in[0]		matriz	*/ //Lista de puntos recogidos
+/*parameters_in[1]		resolucion	*/ //resolucion angular horizontal
+/*parameters_in[2]		VCOCHE	*/  //Velocidad actual del coche
+/*parameters_in[3]		consigna_velocidad	*/ //Puntero para la consigna de velocidad
+/*parameters_in[4]		consigna_volante	*/ //Puntero para la consigna de volante
+/*parameters_in[5]		apertura	*/ //Apertura util del laser
+
+
+//List<Punto3D^>^ matriz, double resolucionAngular,double Vcoche, double &consigna_velocidad, double &consigna_volante, double apertura
+void DataAnalisys::AnalisysThread(){
+	//Conversion de vector de parametros de entrada a parametros locales
+	matriz = (List<Punto3D^>^)parameters_in[0];
+	resolution = (double)parameters_in[1];
+	VCOCHE = (double)parameters_in[2];
+	consigna_velocidad = (double)parameters_in[3];
+	consigna_volante = (double)parameters_in[4];
+	apertura = (double)parameters_in[5];
 	NUMERO_COLUMNAS = matriz->Count/NUMERO_FILAS;
+	
 	if (VCOCHE > 5) {
 		if (!comprobarBloqueo(matriz))
 		{
@@ -39,7 +53,7 @@ void DataAnalisys::AnalisysThread(){
 			RelacionarObstaculos();
 			//TODO::Calcular TTC y actualizar consignas
 		}
-		else consigna_velocidad = 0;
+		else consigna_velocidad = 0.0;
 	}
 	ObstaculosvAnt = Obstaculos;
 	Obstaculos->Clear();
