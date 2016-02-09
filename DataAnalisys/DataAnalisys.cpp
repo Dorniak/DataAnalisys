@@ -7,6 +7,7 @@ DataAnalisys::DataAnalisys()
 	{
 		listMenor[k] = 0;
 	}
+	//TODO::Añadir objeto Open Gl y Systema de control
 }
 //matriz::Lista de puntos
 //resolucionAngular::resolucion del laser
@@ -34,6 +35,74 @@ void DataAnalisys::Analisys(cli::array<Object^> ^ data) {
 
 //List<Punto3D^>^ matriz, double resolucionAngular,double Vcoche, double &consigna_velocidad, double &consigna_volante, double apertura
 void DataAnalisys::AnalisysThread(){
+	
+	
+	//En caso de que se desactive y se reactive despues hay que limpiar los objetos
+
+	ObstaculosvAnt->Clear();
+	/*
+	//TODO:Modificar la funcion con un while y añadir las modificaciones de flags
+	while (myflag) {
+		if (Warning == 0 && Control->Reader == 0) {
+			matriz = Control->Puntos;
+			resolution = Control->resolucion;
+			VCOCHE = Control->Vcoche;
+			apertura = Control->apertura;
+			NUMERO_COLUMNAS = matriz->Count / NUMERO_FILAS;
+
+			//Trabajo
+
+
+			if (VCOCHE > 5) {
+				if (!comprobarBloqueo(matriz))
+				{
+					Segmentacion(matriz, apertura);
+					//TODO::Identificar tipo de obstaculo
+					EliminarObstaculos();
+					prepararObstaculos();
+					RelacionarObstaculos();
+					//TODO::Calcular TTC y actualizar consignas
+				}
+				else consigna_velocidad = 0.0;
+			}
+			ObstaculosvAnt = Obstaculos;
+			Obstaculos->Clear();
+
+
+			//Fin tratamiento
+
+			//Copiar el vector de obstaculos obtenido en control
+			Control->Obstaculos = ObstaculosvAnt;
+			//Llamamos a Open Gl para que dibuje los obstaculos
+			OpenGl->Dibujar Obstaculos;
+
+			//Actualizar consignas en el vector de conclusiones
+			Control->Conclusiones[0] = consigna_velocidad;
+			Control->Conclusiones[1] = consigna_volante;
+
+
+			//Control de colision y finalizacion
+
+			if (Control->Reader == 1) {
+				Warning = 1;
+			}
+			Control->Reader = 1;
+
+		}
+		else {
+			Control->Reader = 1;
+			Warning = 1;
+			break;
+		}
+
+		if (flagPausa)
+			break;
+	}
+	
+
+	
+
+	*/
 	//Conversion de vector de parametros de entrada a parametros locales
 	matriz = (List<Punto3D^>^)parameters_in[0];
 	resolution = (double)parameters_in[1];
@@ -118,7 +187,7 @@ void DataAnalisys::Segmentacion(List<Punto3D^>^ matrix,double apertura)
 					else if (listMenor[2] != 0) { menor = 2; }
 					else if (listMenor[3] != 0) { menor = 3; }
 					//TODO::Recorrer la lista y eliminar puntos no validos
-					//resolver ambiguedades:si un punto puede pertenecer a dos obstaculos unir dichos obstaculos
+					//TODO::resolver ambiguedades:si un punto puede pertenecer a dos obstaculos unir dichos obstaculos
 
 					//Si los puntos adyacentes no existen se incluye este punto en un obstaculo
 					if (menor != -1)
